@@ -20,9 +20,18 @@ import beta.app.way.utils.LogHelper;
 public class FriendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Friend> mDataSource;
     private Activity mActivity;
+    private FriendAdapterCallback mCallback;
 
-    public FriendAdapter(@NonNull Activity activity, @NonNull List<Friend> dataSource) {
+    public interface FriendAdapterCallback {
+        void onItemClick(@NonNull View view, int position, @NonNull Friend friend);
+    }
+
+    public FriendAdapter(@NonNull Activity activity,
+                         @NonNull FriendAdapterCallback callback,
+                         @NonNull List<Friend> dataSource) {
+
         mActivity = activity;
+        mCallback = callback;
         mDataSource = dataSource;
     }
 
@@ -44,14 +53,15 @@ public class FriendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final Friend data = mDataSource.get(position);
         if (holder instanceof FriendViewHolder) {
-            ((FriendViewHolder) holder).setData(data);
-            ((FriendViewHolder) holder).ivSelectable.setOnClickListener(new View.OnClickListener() {
+            final FriendViewHolder viewHolder = (FriendViewHolder) holder;
+            viewHolder.setData(data);
+            viewHolder.mainHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LogHelper.showToast(mActivity, data.getName());
+                    mCallback.onItemClick(viewHolder.ivAvatar, position, data);
                 }
             });
         }

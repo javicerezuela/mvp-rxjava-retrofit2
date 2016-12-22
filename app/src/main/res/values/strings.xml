@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">WAY</string>
-    <string name="show">Show</string>
-    <string name="no">No</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="image_preview">Image Preview</string>
+
+    <!-- String Menu -->
+    <string name="action_settings">Settings</string>
 
     <!-- Client Error Message -->
     <string name="network_error_400">Bad Request</string>

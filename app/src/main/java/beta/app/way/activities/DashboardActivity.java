@@ -2,6 +2,7 @@ package beta.app.way.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,7 +27,7 @@ import butterknife.BindView;
  * Created by panjiyudasetya on 12/16/16.
  */
 
-public class DashboardActivity extends BaseActivity implements FriendListPageContract.View {
+public class DashboardActivity extends BaseActivity implements FriendListPageContract.View, FriendAdapter.FriendAdapterCallback {
     @BindView(R.id.progress)
     ProgressBar mProgressView;
     @BindView(R.id.recycler_view)
@@ -46,13 +47,19 @@ public class DashboardActivity extends BaseActivity implements FriendListPageCon
         super.onCreate(savedInstanceState);
 
         mActivity = this;
-        mAdapter = new FriendAdapter(mActivity, new ArrayList<Friend>());
+        mAdapter = new FriendAdapter(mActivity, this, new ArrayList<Friend>());
         mRvFriends.setLayoutManager(new GridLayoutManager(this, 2));
         mRvFriends.setAdapter(mAdapter);
         mPresenter = new FriendListPresenter(this,
                 new FriendListModel(),
                 mSubscription,
                 new APIErrorHandler(mActivity));
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -79,5 +86,15 @@ public class DashboardActivity extends BaseActivity implements FriendListPageCon
     @Override
     public void updateListWithSource(@NonNull List<Friend> friends) {
         mAdapter.setDataSource(friends);
+    }
+
+    @Override
+    public void onItemClick(@NonNull final View view, int position, @NonNull final Friend friend) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DetailActivity.launch(DashboardActivity.this, view, friend);
+            }
+        }, 300);
     }
 }
