@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">WAY</string>
+    <string name="show">Show</string>
+    <string name="no">No</string>
+
+    <!-- Client Error Message -->
+    <string name="network_error_400">Bad Request</string>
+    <string name="network_error_401">Unauthorized</string>
+    <string name="network_error_403">Forbidden</string>
+    <string name="network_error_404">Not Found</string>
+    <string name="network_error_408">Request Time Out</string>
+</resources>
